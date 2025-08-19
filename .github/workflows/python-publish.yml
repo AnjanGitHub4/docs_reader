@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read   # default
+      # id-token: write  <-- not needed since we use API token
 
     steps:
       - name: Checkout source
@@ -22,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install build twine toml
+          pip install build toml
 
       - name: Bump version with post release
         id: bump
