@@ -14,5 +14,5 @@ keywords=["docs", "automation", "helper"]
 dependencies = []
 
 [project.urls]
-Homepage="" 
-Repository=""
+Homepage="https://github.com/AnjanGitHub4/docs_reader" 
+Repository="https://github.com/AnjanGitHub4/docs_reader"
