@@ -10,8 +10,7 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read   # default
-      # id-token: write  <-- not needed since we use API token
+      contents: read   # Only need read perms for repo
 
     steps:
       - name: Checkout source
@@ -37,14 +36,12 @@ jobs:
           CURRENT_VERSION=$(grep '^version' $FILE | cut -d'"' -f2)
 
           if [[ "$CURRENT_VERSION" == "$BASE_VERSION" ]]; then
-            # first post release
             NEW_VERSION="${BASE_VERSION}.post1"
           elif [[ "$CURRENT_VERSION" =~ ^${BASE_VERSION}\.post([0-9]+)$ ]]; then
             NUM=${BASH_REMATCH[1]}
             NEXT=$((NUM+1))
             NEW_VERSION="${BASE_VERSION}.post${NEXT}"
           else
-            # fallback → just keep current
             NEW_VERSION=$CURRENT_VERSION
           fi
 
@@ -55,7 +52,8 @@ jobs:
       - name: Build package
         run: python -m build
 
-      - name: Publish to PyPI
+      - name: Publish to PyPI using API token
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          user: __token__   # <--- force API token auth
           password: ${{ secrets.PYPI_API_TOKEN }}
