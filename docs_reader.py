@@ -33,7 +33,8 @@ class DocsReader():
     '''
     
     # constructor or caller object
-    def __init__(self):
+    def __init__(self, module_name=None):
+        self.module_name = module_name
         current_frame = inspect.currentframe().f_back
         self.filename = current_frame.f_code.co_filename
         self.line_no = current_frame.f_lineno
